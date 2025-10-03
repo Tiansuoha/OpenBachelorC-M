@@ -20,4 +20,4 @@ tsu -s "start adbd"
 # Wait for ADB service to start
 sleep 2
 
-cd ~/storage/downloads/OpenBachelorC-M/ && sh main.sh
+cd ~/storage/downloads/OpenBachelorC-M/ ||cd && sh main.sh
