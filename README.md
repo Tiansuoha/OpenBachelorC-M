@@ -148,9 +148,17 @@
 
 - **A:** 未正确执行备份恢复操作，请重新执行 `termux-restore /sdcard/backup.tar.xz`
 
+**Q：提示 `permisson denied` ？**
+- **A:** 文件的权限不足
+    - Root 用户：
+      1.尝试禁用SELinux： `sudo setenforce 0`
+      2.赋予文件权限：`cd 文件所在路径 && chmod -R 777`
+    - 非 Root 用户：
+      赋予文件权限：`cd 文件所在路径 && chmod -R 777`
+
 **Q: 如何停止正在运行的脚本？**
 
-- **A:** 退出 PvZ Online 游戏后，在 Termux 中按 `Ctrl+D` 组合键中断脚本运行
+- **A:** 退出游戏后，在 Termux 中按 `Ctrl+D` 组合键中断脚本运行
 
 **Q: 非 Root 用户每次都要手动操作吗？**
 
