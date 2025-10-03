@@ -1,6 +1,10 @@
 #!/data/data/com.termux/files/usr/bin/bash
 
 enable_adb(){
+echo "脚本将执行以下操作："
+echo "1. 启用无线ADB并设置端口为5555"
+echo "2. 重启ADB服务"
+echo "3. 切换到指定目录开始执行"
 tsu -s "setprop service.adb.tcp.port 5555"
 tsu -s "stop adbd"
 tsu -s "start adbd"
@@ -46,11 +50,7 @@ clean(){
     read
 }
 
-# 选择启动模式
-echo "脚本将执行以下操作："
-echo "1. 启用无线ADB并设置端口为5555"
-echo "2. 重启ADB服务"
-echo "3. 切换到指定目录开始执行"
+# 功能选择
 echo "功能列表"
 echo "（1）正常启动"
 echo "（2）无代理启动"
