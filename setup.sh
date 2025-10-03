@@ -1,15 +1,13 @@
 #!/bin/bash
-# OpenBachelorC Setup Script for Android/Termux
-# Equivalent of setup.cmd
+#切换清华源
+sed -i 's@^\(deb.*stable main\)$@#\1\ndeb https://mirrors.tuna.tsinghua.edu.cn/termux/apt/termux-main stable main@' $PREFIX/etc/apt/sources.list
+pkg update -y && pkg upgrade -y
 
-echo "Setting up OpenBachelorC for Android/Termux..."
-
-# Install dependencies directly using pip
-echo "Installing Python dependencies..."
-python -m pip install --upgrade pip
-python -m pip install "prompt-toolkit>=3.0.51,<4.0.0"
-python -m pip install "requests>=2.32.4,<3.0.0"
-python -m pip install "pycryptodome>=3.23.0"
-
-echo "Setup completed! Press Enter to continue..."
-read
+#安装必要的软件包
+pkg install -y python git curl rust
+#下载并设置poetry
+curl -sSL https://install.python-poetry.org | python3 -
+echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.bash_profile
+source ~/.bash_profile
+poetry self update
+poetry install
