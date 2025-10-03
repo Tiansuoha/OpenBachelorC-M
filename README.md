@@ -151,10 +151,10 @@
 **Q：提示 `permisson denied` ？**
 - **A:** 文件的权限不足
     - Root 用户：
-      1.尝试禁用SELinux： `sudo setenforce 0`
-      2.赋予文件权限：`cd 文件所在路径 && chmod -R 777`
+      - 1.尝试禁用SELinux： `sudo setenforce 0`
+      - 2.赋予文件权限：`cd 文件所在路径 && chmod -R 777`
     - 非 Root 用户：
-      赋予文件权限：`cd 文件所在路径 && chmod -R 777`
+      - 赋予文件权限：`cd 文件所在路径 && chmod -R 777`
 
 **Q: 如何停止正在运行的脚本？**
 
