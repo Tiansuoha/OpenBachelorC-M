@@ -9,7 +9,15 @@ build_js(){
   npx frida-compile -S src/script/trainer/index.ts -o tmp/trainer.js
   echo "构建完成！按任意键继续……"
   read
-  }
+}
+
+build_js_alt(){
+echo "构建JavaScript文件 (可选方法)..."
+npx tsc
+npx webpack -o tmp/alt/
+echo "构建完成！按任意键继续……"
+read
+}
 
 # 功能选择
 echo "功能列表"
