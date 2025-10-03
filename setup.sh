@@ -15,6 +15,14 @@ setup_python(){
   poetry install
 }
 
+setup_project(){
+  echo "正在设置project依赖..."
+  npm i -D typescript @types/frida-gum @types/node frida-compile frida-il2cpp-bridge frida-java-bridge
+  npx tsc --init
+  echo "设置完成！按任意键继续……"
+  read
+}
+
 echo"(1)设置python环境"
 echo"(2)设置project环境"
 echo"(3)设置project环境（可选）"
