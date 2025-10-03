@@ -23,6 +23,13 @@ setup_project(){
   read
 }
 
+setup_project_alternative(){
+  echo "正在设置可选的project依赖……"
+  npm i -D webpack webpack-cli
+  echo "设置完成！按任意键继续……"
+  read
+}
+
 echo"(1)设置python环境"
 echo"(2)设置project环境"
 echo"(3)设置project环境（可选）"
