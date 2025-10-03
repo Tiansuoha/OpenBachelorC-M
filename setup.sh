@@ -1,13 +1,39 @@
 #!/bin/bash
-#切换清华源
-sed -i 's@^\(deb.*stable main\)$@#\1\ndeb https://mirrors.tuna.tsinghua.edu.cn/termux/apt/termux-main stable main@' $PREFIX/etc/apt/sources.list
-pkg update -y && pkg upgrade -y
 
-#安装必要的软件包
-pkg install -y python git curl rust
-#下载并设置poetry
-curl -sSL https://install.python-poetry.org | python3 -
-echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.bash_profile
-source ~/.bash_profile
-poetry self update
-poetry install
+setup_python(){
+  #切换清华源
+  sed -i 's@^\(deb.*stable main\)$@#\1\ndeb https://mirrors.tuna.tsinghua.edu.cn/termux/apt/termux-main stable main@' $PREFIX/etc/apt/sources.list
+  pkg update -y && pkg upgrade -y
+  
+  #安装必要的软件包
+  pkg install -y python git curl rust
+  #下载并设置poetry
+  curl -sSL https://install.python-poetry.org | python3 -
+  echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.bash_profile
+  source ~/.bash_profile
+  poetry self update
+  poetry install
+}
+
+echo"(1)设置python环境"
+echo"(2)设置project环境"
+echo"(3)设置project环境（可选）"
+echo"(4)退出"
+read -p "请选择(1/2/3/4): " confirm
+
+confirm=${confirm:-1} 
+if [ "$confirm" = "1" ]; 
+    setup_python
+elif [ "$confirm" = "2" ]; 
+    setup_project
+elif [ "$confirm" = "3" ]; 
+    setup_project_alternative
+elif [ "$confirm" = "4" ]; 
+    echo"已退出"
+    exit 0
+else
+    echo "无效选择"
+    exit 1
+fi
+
+exit 0
