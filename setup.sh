@@ -8,10 +8,22 @@ setup_python(){
   #安装必要的软件包
   pkg install -y python git pip curl rust
   #下载并设置poetry
-  curl -sSL https://install.python-poetry.org | python3 - || echo "安装失败！正在切换第二种安装方法……" && pip install poetry && echo "安装成功！" || echo "安装失败！请检查网络连接" && eixt 1
-  echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.bash_profile
+  curl -sSL https://install.python-poetry.org | python3 - || {
+  echo "安装失败！正在切换第二种安装方法……"
+  pip install poetry && echo "安装成功！" || {
+    echo "安装失败！请检查网络连接"
+    exit 1
+  }
+}
   source ~/.bash_profile
-  poetry install
+  # 检查Poetry项目配置文件，存在时才执行install
+  if [ -f "pyproject.toml" ]; then
+    echo "正在安装Python项目依赖（poetry install）..."
+    poetry install
+  else
+    echo "未找到pyproject.toml，跳过poetry install"
+  fi
+}
 }
 
 setup_project(){
