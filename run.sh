@@ -59,14 +59,14 @@ echo "（4）退出"
 read -p "请选择(1/2/3/4)(默认：1): " confirm
 
 confirm=${confirm:-1} 
-if [ "$confirm" = "1" ]; 
+if [ "$confirm" = "1" ]; then
     start
-elif [ "$confirm" = "2" ]; 
+elif [ "$confirm" = "2" ]; then
     start_no_proxy
-elif [ "$confirm" = "3" ]; 
+elif [ "$confirm" = "3" ]; then
     clean
-elif [ "$confirm" = "4" ]; 
-    echo"已退出"
+elif [ "$confirm" = "4" ]; then
+    echo "已退出"
     exit 0
 else
     echo "无效选择"
