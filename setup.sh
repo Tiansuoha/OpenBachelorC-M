@@ -6,11 +6,11 @@ setup_python(){
   pkg update -y && pkg upgrade -y
   
   #安装必要的软件包
-  pkg install -y python git pip curl rust
+  pkg install -y python git curl rust
   #下载并设置poetry
   curl -sSL https://install.python-poetry.org | python3 - || {
   echo "安装失败！正在切换第二种安装方法……"
-  pip install poetry && echo "安装成功！" || {
+  pkg install -y pip && pip install poetry && echo "安装成功！" || {
     echo "安装失败！请检查网络连接"
     exit 1
   }
@@ -23,7 +23,6 @@ setup_python(){
   else
     echo "未找到pyproject.toml，跳过poetry install"
   fi
-}
 }
 
 setup_project(){
