@@ -34,29 +34,12 @@ start_no_proxy(){
     echo "按任意键继续……"&&read -r
 }
 
-clean(){
-    # 删除临时文件
-    rm -rf tmp/
-    rm -rf node_modules/
-    rm -rf .venv/
-    rm -rf __pycache__/
-    rm -rf *.pyc
-    rm -rf .pytest_cache/
-    
-    # 移除Poetry虚拟环境
-    python -m pipx run poetry env remove --all 2>/dev/null || true
-    
-    echo "清理完成！按任意键继续……"
-    read
-}
-
 # 功能选择
 echo "功能列表"
 echo "（1）正常启动"
 echo "（2）无代理启动"
-echo "（3）清理环境"
-echo "（4）退出"
-read -p "请选择(1/2/3/4)(默认：1): " confirm
+echo "（3）退出"
+read -p "请选择(1/2/3)(默认：1): " confirm
 
 confirm=${confirm:-1} 
 if [ "$confirm" = "1" ]; then
@@ -64,8 +47,6 @@ if [ "$confirm" = "1" ]; then
 elif [ "$confirm" = "2" ]; then
     start_no_proxy
 elif [ "$confirm" = "3" ]; then
-    clean
-elif [ "$confirm" = "4" ]; then
     echo "已退出"
     exit 0
 else
