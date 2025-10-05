@@ -1,26 +1,22 @@
 import subprocess
 import os
 import lzma
-import platform
 import json
 
 from .const import PACKAGE_NAME
 from .config import config
 
-if platform.system() == "Windows":
-    ADB_FILEPATH = "platform-tools/adb.exe"
-else:
-    ADB_FILEPATH = "adb"
+ADB_FILEPATH = "adb"
 
 MAX_NUM_MUMU_EMU = 4
 MAX_NUM_LD_EMU = 4
 
 ARCH_TO_FRIDA_SERVER_XZ_FILEPATH = {
-    "arm64-v8a": "frida-server/frida-server-17.2.15-android-arm64.xz",
-    "x86_64": "frida-server/frida-server-17.2.15-android-x86_64.xz",
+    "arm64-v8a": "frida-server/frida-server-17.2.14-android-arm64.xz",
+    "x86_64": "frida-server/frida-server-17.2.14-android-x86_64.xz",
 }
 
-ANDROID_FRIDA_SERVER_FILEPATH = "/data/local/tmp/florida-17.2.15"
+ANDROID_FRIDA_SERVER_FILEPATH = "/data/local/tmp/florida-17.2.14"
 
 TMP_DIRPATH = "tmp/"
 
@@ -85,10 +81,10 @@ def upload_frida_server_if_necessary(emulator_id):
     )
 
     if not proc.stdout.strip():
-        print("info: frida server found")
+        print("info: frida服务器已找到")
         return
 
-    print("info: frida server not found")
+    print("info: frida服务器未找到")
 
     os.makedirs(TMP_DIRPATH, exist_ok=True)
 
@@ -129,11 +125,11 @@ def upload_frida_server_if_necessary(emulator_id):
         ],
     )
 
-    print("info: frida server uploaded")
+    print("info: frida服务器已上传")
 
 
 def root_emulator(emulator_id):
-    print("info: root emulator")
+    print("info: root模拟器")
     proc = subprocess.run(
         [
             ADB_FILEPATH,
@@ -151,14 +147,14 @@ def root_emulator(emulator_id):
             "wait-for-device",
         ],
     )
-    print("info: emulator rooted")
+    print("info: emulator已root")
 
 
 def run_root_cmd(emulator_id, root_cmd, kwargs=None):
     tmp_lst = []
 
     if config["use_su"]:
-        tmp_lst = ["su", "-c"]
+        tmp_lst = ["system/bin/su", "-c"]
 
     if kwargs is None:
         kwargs = {}
@@ -202,10 +198,10 @@ def start_frida_server(emulator_id):
     root_flag = check_root(emulator_id)
 
     if not root_flag:
-        print("warn: root check failed, skipping frida server startup")
+        print("warn: root检测失败, 跳过frida服务器开启")
         return
 
-    print("info: root check passed")
+    print("info: root检测通过")
 
     frida_port = config["frida_port"]
 
@@ -216,14 +212,14 @@ def start_frida_server(emulator_id):
 
     proc = run_root_cmd(emulator_id, start_frida_server_cmd)
 
-    print("info: frida server started")
+    print("info: frida服务器已开启")
 
 
 def start_reverse_proxy(emulator_id, port):
     proc = subprocess.run(
         [ADB_FILEPATH, "-s", emulator_id, "reverse", f"tcp:{port}", f"tcp:{port}"],
     )
-    print("info: adb reverse proxy started")
+    print("info: adb反向代理已开启")
 
 
 def clear_forward_proxy(emulator_id):
@@ -236,7 +232,7 @@ def clear_forward_proxy(emulator_id):
             "--remove-all",
         ],
     )
-    print("info: adb forward proxy cleared")
+    print("info: adb正向代理已清除")
 
 
 def start_forward_proxy(emulator_id, remote_port, local_port=27042):
@@ -250,14 +246,14 @@ def start_forward_proxy(emulator_id, remote_port, local_port=27042):
             f"tcp:{remote_port}",
         ],
     )
-    print("info: adb forward proxy started")
+    print("info: adb正向代理已开启")
 
 
 def pull_file(emulator_id, remote_filepath, local_filepath):
     proc = subprocess.run(
         [ADB_FILEPATH, "-s", emulator_id, "pull", remote_filepath, local_filepath],
     )
-    print(f"info: pulled remote {remote_filepath} to local {local_filepath}")
+    print(f"info: 拉取远程 {remote_filepath} 到本地 {local_filepath}")
 
 
 def clear_dumped_json(emulator_id):
