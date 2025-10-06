@@ -52,7 +52,7 @@ python_frida(){
     FRIDA_VERSION_ARG="$1"
     
     if ! command -v termux-setup-storage &>/dev/null; then
-      echo "This script can be executed only on Termux"
+      echo "该脚本只能在termux上运行"
       exit 1
     fi
     
@@ -71,7 +71,7 @@ python_frida(){
             arch="x86"
             ;;
         *)
-            echo "System architecture not recognized: $(uname -m)"
+            echo "系统架构无法识别: $(uname -m)"
             exit 1
             ;;
     esac
@@ -84,30 +84,30 @@ python_frida(){
     
     # Use the specified Frida version
     FRIDA_VERSION="$FRIDA_VERSION_ARG"
-    echo "Installing Frida version: $FRIDA_VERSION"
+    echo "安装Frida版本: $FRIDA_VERSION"
     
     # Download Frida devkit for specified version
     DEVKIT_URL="https://github.com/Alexjr2/Frida_Termux_Installation/releases/download/$FRIDA_VERSION/frida-core-devkit-android-$arch.tar.xz"
     DEVKIT_FILE="frida-core-devkit-android-$arch.tar.xz"
     
-    echo "Downloading Frida devkit from: $DEVKIT_URL"
+    echo "下载Frida devkit从: $DEVKIT_URL"
     if ! curl -L -o "$DEVKIT_FILE" "$DEVKIT_URL"; then
-        echo "Error: Failed to download Frida devkit."
-        rm -f "$DEVKIT_FILE"  # Clean up partial download
+        echo "Error:Frida devkit下载失败."
+        rm -f "$DEVKIT_FILE"  # 清理部分下载
         exit 1
     fi
     
     # Check if download was successful (file exists and has content)
     if [ ! -f "$DEVKIT_FILE" ] || [ ! -s "$DEVKIT_FILE" ]; then
-        echo "Error: Unable to download Frida devkit or file is empty. Please check if version $FRIDA_VERSION exists."
-        echo "Please confirm the version at: https://github.com/Alexjr2/Frida_Termux_Installation/releases"
+        echo "Error: 无法下载Frida devkit或文件为空.请检查版本$FRIDA_VERSION是否存在."
+        echo "请确认版本在: https://github.com/Alexjr2/Frida_Termux_Installation/releases"
         rm -f "$DEVKIT_FILE"  # Clean up empty file
         exit 1
     fi
     
     # Clean up any existing devkit directory
     if [ -d "devkit" ]; then
-        echo "Cleaning up existing devkit directory..."
+        echo "清理现有的devkit目录……"
         rm -rf devkit
     fi
     
@@ -116,15 +116,15 @@ python_frida(){
     
     # Clean up any existing frida-python directory
     if [ -d "frida-python" ]; then
-        echo "Cleaning up existing frida-python directory..."
+        echo "清理现有的frida-python目录..."
         rm -rf frida-python
     fi
     
     # Clone and install Frida Python with specified version
-    echo "Cloning frida-python version: $FRIDA_VERSION"
+    echo "克隆frida-python版本: $FRIDA_VERSION"
     if ! git clone -b "$FRIDA_VERSION" --depth 1 https://github.com/frida/frida-python.git; then
-        echo "Error: Unable to clone frida-python version $FRIDA_VERSION. Please check if the version number is correct."
-        echo "Please confirm the version $FRIDA_VERSION exists at https://github.com/frida/frida-python/releases"
+        echo "Error: 无法克隆frida-python 版本 $FRIDA_VERSION.请检查版本号是否正确."
+        echo "请确认版本 $FRIDA_VERSION 存在于 https://github.com/frida/frida-python/releases"
         exit 1
     fi
     
@@ -134,12 +134,12 @@ python_frida(){
     patch -p1 < frida-python.patch
     
     #install frida-python
-    echo "Installing Frida Python version $FRIDA_VERSION..."
+    echo "正在安装 Frida Python 版本 $FRIDA_VERSION..."
     if FRIDA_VERSION="$FRIDA_VERSION" FRIDA_CORE_DEVKIT="$PWD/../devkit" pip install --force-reinstall .; then
-        echo "Successfully installed Frida Python version $FRIDA_VERSION!"
-        echo "You can now use: import frida in Python"
+        echo "成功安装 Frida Python 版本 $FRIDA_VERSION!"
+        echo "你现在可以使用: import frida in Python"
     else
-        echo "Error: Frida Python installation failed."
+        echo "Error: Frida Python 安装失败."
 }
 
 echo "(1)设置python环境"
