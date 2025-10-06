@@ -178,6 +178,7 @@ def cleanup(emulator_id):
 
 
 def main():
+    emulator_id = ""
     try:
         setup_config()
 
