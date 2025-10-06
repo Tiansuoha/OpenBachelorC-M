@@ -67,7 +67,7 @@ def setup_config():
         config["trainer_config"]["dump_json"] = True
 
     if config["no_proxy"] and config["enable_trainer"]:
-        print("warn: trainer is disabled when no proxy is enabled")
+        print("warn:没有代理启用时，禁用训练器")
         config["enable_trainer"] = False
 
 
@@ -80,11 +80,11 @@ def setup_game():
         running_emulator_id_lst = get_running_emulators()
 
         if not running_emulator_id_lst:
-            print("error: emulator not found")
+            print("error: 模拟器未找到")
             exit(1)
 
     emulator_id = running_emulator_id_lst[0]
-    print(f"info: using emulator {emulator_id}")
+    print(f"info: 使用模拟器 {emulator_id}")
 
     upload_frida_server_if_necessary(emulator_id)
 
