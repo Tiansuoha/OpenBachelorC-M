@@ -89,7 +89,8 @@ def setup_game():
     upload_frida_server_if_necessary(emulator_id)
 
     kill_root_process(emulator_id, "florida-")
-
+    
+    clear_forward_proxy(emulator_id)
     if not config["use_gadget"]:
         start_frida_server(emulator_id)
 
@@ -106,7 +107,7 @@ def setup_game():
     frida_port = config["frida_port"]
     gadget_port = config["gadget_port"]
 
-    clear_forward_proxy(emulator_id)
+
     if config["use_gadget"]:
         start_forward_proxy(emulator_id, gadget_port)
     else:
@@ -114,7 +115,7 @@ def setup_game():
 
     game = start_game(emulator_id)
 
-    print("info: game started")
+    print("info: 游戏已开始")
 
     return emulator_id, game
 
