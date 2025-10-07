@@ -1,28 +1,42 @@
 #!/bin/bash
 
 setup_python(){
+  #该脚本适用于初次设置环境
+  #该脚本限于在termux中使用
+  if ! command -v termux-setup-storage &>/dev/null; then
+        echo "该脚本只能在termux上运行"
+        exit 1
+      fi
+  
   #切换清华源
   sed -i 's@^\(deb.*stable main\)$@#\1\ndeb https://mirrors.tuna.tsinghua.edu.cn/termux/apt/termux-main stable main@' $PREFIX/etc/apt/sources.list
   pkg update -y && pkg upgrade -y
   
   #安装必要的软件包
-  pkg install -y python git curl rust
+  pkg install -y python rust root-repo frida-python tsu android-tools
   #下载并设置poetry
-  curl -sSL https://install.python-poetry.org | python3 - || {
-  echo "安装失败！正在切换第二种安装方法……"
-  pkg install -y pip && pip install poetry && echo "安装成功！" || {
-    echo "安装失败！请检查网络连接"
-    exit 1
-  }
+  curl -sSL https://install.python-poetry.org | python3 - && echo "安装成功！" || {
+    echo "安装失败！正在切换为pip安装……"
+    pkg install -y python-pip && pip install poetry && echo "安装成功！" || {
+      echo "安装失败！请检查网络连接"
+      exit 1
+    }
 }
-  source ~/.bash_profile
-  # 检查Poetry项目配置文件，存在时才执行install
-  if [ -f "pyproject.toml" ]; then
+
+# 配置环境变量
+sed -i '/export PATH =/d' ~/.bash_profile && echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.bash_profile
+source ~/.bash_profile
+
+# 检查 Poetry 是否有可用更新
+poetry self show --outdated | grep -q 'No outdated packages' && echo "Poetry 已是最新版本，跳过更新" || poetry self update
+
+#安装Python项目依赖
+if [ -f "pyproject.toml" ]; then
     echo "正在安装Python项目依赖（poetry install）..."
     poetry install
   else
     echo "未找到pyproject.toml，跳过poetry install"
-  fi
+fi
 }
 
 setup_project(){
